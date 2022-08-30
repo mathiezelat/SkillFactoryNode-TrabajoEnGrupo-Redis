@@ -5,10 +5,14 @@ const UserSchema = new mongoose.Schema(
 	{
 		username: String,
 		password: String,
-		rol: { type: String, enum: ['USER', 'ADMIN'], default: 'USER' },
-		notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Note' }],
+		discordId: String,
+		rol: {
+			type: String,
+			enum: ['ADMIN_ROLE', 'USER_ROLE'],
+			default: 'USER_ROLE',
+		},
 	},
-	{ versionKey: false }
+	{ versionKey: false, timestamps: true }
 )
 
 UserSchema.methods.generateHash = async password => {

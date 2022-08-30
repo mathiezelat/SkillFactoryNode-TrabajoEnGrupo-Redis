@@ -1,21 +1,38 @@
 import express from 'express'
 import morgan from 'morgan'
 import mongoose from 'mongoose'
-import dotenv from 'dotenv'
+import session from 'express-session'
+import passport from 'passport'
+
+import { PORT } from './config.js'
 
 import { client } from './redis/client.js'
 
 import v1AuthRoute from './v1/routes/auth.js'
 import v1SwapiRoute from './v1/routes/swapi.js'
 
-const PORT = process.env.PORT || 3000
-
-dotenv.config()
-
 const app = express()
 
+import './auth/discordStrategy.js'
+
 app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
 app.use(morgan('dev'))
+
+app.use(
+	session({
+		secret: 'secret',
+		cookie: {
+			maxAge: 60000 * 60 * 42,
+		},
+		saveUninitialized: false,
+		resave: false,
+		name: 'NN',
+	})
+)
+
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use('/api/v1/auth', v1AuthRoute)
 app.use('/api/v1/swapi', v1SwapiRoute)
