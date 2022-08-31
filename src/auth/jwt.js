@@ -13,13 +13,15 @@ const login = async (username, password) => {
 		return new Error('User not exists')
 	}
 
+	const objectIdString = user._id.toString()
+
 	const isPasswordCorrect = await user.validatePassword(password)
 
 	if (!isPasswordCorrect) {
 		return new Error('Password incorrect')
 	}
 
-	const getTokenRedis = await client.get(user._id)
+	const getTokenRedis = await client.get(objectIdString)
 
 	if (getTokenRedis) return getTokenRedis
 
@@ -40,13 +42,13 @@ const login = async (username, password) => {
 
 	const token = jwt.sign(userToken, SECRET_OR_PRIVATE_KEY)
 
-	await client.set(user._id, token, {
+	await client.set(objectIdString, token, {
 		EX: 240,
 	})
 
 	await Token.create({
 		token,
-		userId: user._id,
+		userId: objectIdString,
 	})
 
 	return token
@@ -68,13 +70,15 @@ const register = async (username, password) => {
 
 	const token = jwt.sign(userToken, SECRET_OR_PRIVATE_KEY)
 
-	await client.set(savedUser._id, token, {
+	const objectIdString = savedUser._id.toString()
+
+	await client.set(objectIdString, token, {
 		EX: 240,
 	})
 
 	await Token.create({
 		token,
-		userId: savedUser._id,
+		userId: objectIdString,
 	})
 
 	return token

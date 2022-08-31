@@ -28,7 +28,7 @@ const register = async (req, res) => {
 
 	if (!username || !password) {
 		res.status(400).json({
-			msg: 'Username and password fields are required ',
+			msg: 'Username and password fields are required',
 		})
 	}
 
