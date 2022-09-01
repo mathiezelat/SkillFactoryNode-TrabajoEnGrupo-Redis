@@ -10,7 +10,7 @@ const login = async (username, password) => {
 	const user = await User.findOne({ username })
 
 	if (!user) {
-		return new Error('User not exists')
+		throw new Error('User not exists')
 	}
 
 	const objectIdString = user._id.toString()
@@ -18,7 +18,7 @@ const login = async (username, password) => {
 	const isPasswordCorrect = await user.validatePassword(password)
 
 	if (!isPasswordCorrect) {
-		return new Error('Password incorrect')
+		throw new Error('Password incorrect')
 	}
 
 	const getTokenRedis = await client.get(objectIdString)

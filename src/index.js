@@ -10,6 +10,7 @@ import { client } from './redis/client.js'
 
 import v1AuthRoute from './v1/routes/auth.js'
 import v1SwapiRoute from './v1/routes/swapi.js'
+import v1NotesRoute from './v1/routes/notes.js'
 
 const app = express()
 
@@ -36,6 +37,7 @@ app.use(passport.session())
 
 app.use('/api/v1/auth', v1AuthRoute)
 app.use('/api/v1/swapi', v1SwapiRoute)
+app.use('/api/v1/notes', v1NotesRoute)
 
 const main = async () => {
 	try {

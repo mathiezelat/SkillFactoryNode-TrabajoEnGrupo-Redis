@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken'
 
+import { SECRET_OR_PRIVATE_KEY } from '../config.js'
+
 const isAuth = async (req, res, next) => {
 	if (req.user) {
 		next()
@@ -16,9 +18,9 @@ const isAuth = async (req, res, next) => {
 		if (!token) return res.status(403).send('Unauthorized')
 
 		try {
-			const decodedToken = jwt.verify(token, 'secret')
+			const decodedToken = jwt.verify(token, SECRET_OR_PRIVATE_KEY)
 
-			if (!decodedToken._id) return res.status(403).send('Unauthorized')
+			if (!decodedToken.id) return res.status(403).send('Unauthorized')
 
 			req.user = decodedToken
 

@@ -9,9 +9,13 @@
 
 ## API REST
 
-## SWAPI
+### SWAPI
 
 #### `/api/v1/swapi/:param?`
+
+### CRUD NOTES
+
+#### `/api/v1/notes`
 
 ### Authorization
 
